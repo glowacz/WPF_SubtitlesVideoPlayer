@@ -51,6 +51,12 @@
                          LoadedBehavior="Manual" UnloadedBehavior="Manual" MediaOpened="videoPlayer_MediaOpened" 
                           MouseLeftButtonDown="videoPlayer_MouseLeftButtonDown" MouseWheel="videoPlayer_MouseWheel"
                           Source="C:\Users\glowa\Desktop\Studia\SOP2\SOP2 Wykład 10-20210505_141640-Nagrywanie spotkania.mp4"></MediaElement>
+            <TextBlock Name="subtitles" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                       Foreground="White" FontSize="20" Padding="5">
+                <TextBlock.Background>
+                    <SolidColorBrush Color="Black" Opacity="0.5" />
+                </TextBlock.Background>
+            </TextBlock>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
                 <Button Name="playButton" Click="playButton_Click" Width="50">
                     <Button.Background>

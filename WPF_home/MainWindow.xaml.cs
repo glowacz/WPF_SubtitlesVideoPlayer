@@ -130,7 +130,7 @@ namespace WpfLab2
 
             volumeSlider.Value = videoPlayer.Volume;
 
-            string source = "C:\\Users\\glowa\\Desktop\\Studia\\SOP2\\SOP2 Wykład 10-20210505_141640-Nagrywanie spotkania.mp4";
+            string source = "C:\\Users\\glowa\\Desktop\\Studia\\SOP2\\SOP2 Wykład 10-20210505_141640-Nagrywanie spotkania_Trim.mp4";
             videoPlayer.Source = new Uri(source);
             isVideoPlaying = true;
             videoPlayer.Play();
@@ -139,17 +139,27 @@ namespace WpfLab2
 
             DataContext = Rows;
 
-            //DateTime date1 = new DateTime(2010, 1, 1, 8, 0, 15);
-            DateTime date1 = DateTime.Now, date2 = date1.AddMinutes(35);
-            DateTime date3 = new DateTime(2023, 8, 18, 11, 44, 50);
-            //DateTime date2 = new DateTime(2023, 8, 18, 13, 30, 30);
-            DateTime date4 = new DateTime(2023, 8, 18, 12, 4, 24);
-            TimeSpan ts1 = date2 - date1, ts2 = date4 - date3;
+            Random random = new Random();
 
-            Row r1 = new Row(ts1, ts1, "aaa", "aaa (in English)");
-            Row r2 = new Row(ts2, ts2, "bbb", "bbb (in English)");
-            Rows.Add(r1);
-            Rows.Add(r2);
+            for(int i = 0; i<5; i++)
+            {
+                int showTimeSeconds = random.Next(1, 15), duration = random.Next(1, 5);
+                TimeSpan showTime = TimeSpan.FromSeconds(showTimeSeconds), hideTime = TimeSpan.FromSeconds(showTimeSeconds + duration);
+                string text = $"{i}";
+                Rows.Add(new Row(showTime, hideTime, text, $"{i} (in English)"));
+            }
+
+            ////DateTime date1 = new DateTime(2010, 1, 1, 8, 0, 15);
+            //DateTime date1 = DateTime.Now, date2 = date1.AddMinutes(35);
+            //DateTime date3 = new DateTime(2023, 8, 18, 11, 44, 50);
+            ////DateTime date2 = new DateTime(2023, 8, 18, 13, 30, 30);
+            //DateTime date4 = new DateTime(2023, 8, 18, 12, 4, 24);
+            //TimeSpan ts1 = date2 - date1, ts2 = date4 - date3;
+
+            //Row r1 = new Row(ts1, ts1, "aaa", "aaa (in English)");
+            //Row r2 = new Row(ts2, ts2, "bbb", "bbb (in English)");
+            //Rows.Add(r1);
+            //Rows.Add(r2);
 
             Rows = new ObservableCollection<Row>(Rows.OrderBy(x => x.ShowTime));
         }
@@ -162,6 +172,34 @@ namespace WpfLab2
                 positionSlider.Minimum = 0;
                 positionSlider.Maximum = videoPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 positionSlider.Value = videoPlayer.Position.TotalSeconds;
+
+                StringBuilder stringBuilder = new StringBuilder();
+                bool subtitlePresent = false;
+                foreach (var row in Rows)
+                {
+                    //if (row.ShowTime >= videoPlayer.Position && row.HideTime < videoPlayer.Position)
+                    
+                    if (row.ShowTime <= videoPlayer.Position && videoPlayer.Position < row.HideTime)
+                    {
+                        stringBuilder.Append(row.Text);
+                        stringBuilder.Append('\n');
+                        subtitlePresent = true;
+                    }
+                    //if (videoPlayer.Position.TotalSeconds > 1)
+                    //{
+                    //    if (row.ShowTime >= videoPlayer.Position && videoPlayer.Position < row.HideTime)
+                    //        stringBuilder.Append(row.Text);
+                    //}
+                }
+
+                if(stringBuilder.Length > 0)
+                    stringBuilder.Remove(stringBuilder.Length - 1, 1);
+                subtitles.Text = stringBuilder.ToString();
+
+                if (!subtitlePresent)
+                    subtitles.Visibility = Visibility.Hidden;
+                else
+                    subtitles.Visibility = Visibility.Visible;
             }
         }
 
