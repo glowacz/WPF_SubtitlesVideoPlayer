@@ -124,7 +124,7 @@ namespace WpfLab2
             InitializeComponent();
 
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Tick += timer_Tick;
             timer.Start();
 
@@ -262,7 +262,9 @@ namespace WpfLab2
 
         private void positionSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            currentPositionText.Text = TimeSpan.FromSeconds(positionSlider.Value).ToString(@"hh\:mm\:ss");
+            currentPositionText.Text = TimeSpan.FromSeconds(positionSlider.Value).ToString(@"hh\:mm\:ss\:fff");
+            //var converter = new TimeSpanToStringConverter();
+            //currentPositionText.Text = (string) converter.Convert(TimeSpan.FromSeconds(positionSlider.Value), typeof(string), null, new CultureInfo(1));
         }
 
         private void pbVolume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
