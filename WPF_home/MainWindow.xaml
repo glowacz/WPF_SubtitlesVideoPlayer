@@ -29,7 +29,7 @@
                 <MenuItem Header="Exit" Click="MenuItem_Exit" />
             </MenuItem>
             <MenuItem Header="Subtitles">
-                <MenuItem Header="Open"/>
+                <MenuItem Header="Open" Click="Open_Click"/>
                 <MenuItem Header="Save"/>
                 <MenuItem Header="Save Translation" Visibility="{Binding Source={x:Reference showImperial}, Path=IsChecked}"/>
                 <MenuItem x:Name="showImperial" Header="Translation" IsCheckable="True" IsChecked="False"/>

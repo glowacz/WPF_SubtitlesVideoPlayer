@@ -27,8 +27,31 @@ namespace WpfLab2
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
+    public class MainViewModel : INotifyPropertyChanged
+    {
+        private ObservableCollection<Row> rows;
 
-    public class CurrentTimeConverter : IValueConverter
+        public ObservableCollection<Row> Rows
+        {
+            get { return rows; }
+            set
+            {
+                if (rows != value)
+                {
+                    rows = value;
+                    //PropertyChanged(nameof(Rows));
+                    PropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged
+        {
+            add { }
+            remove { }
+        }
+
+        public class CurrentTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -114,7 +137,7 @@ namespace WpfLab2
     }
     public partial class MainWindow : Window
     {
-        private ObservableCollection<Row> Rows { get; set; }
+        ObservableCollection<Row> Rows { get; set; }
 
         bool isVideoPlaying = false;
         bool userIsDraggingSlider = false;
@@ -130,7 +153,7 @@ namespace WpfLab2
 
             volumeSlider.Value = videoPlayer.Volume;
 
-            string source = "C:\\Users\\glowa\\Desktop\\Studia\\SOP2\\SOP2 Wykład 10-20210505_141640-Nagrywanie spotkania_Trim.mp4";
+            string source = "C:\\Users\\glowa\\Desktop\\Studia\\SOP2\\SOP2 Wykład 10-20210505_150655-Nagrywanie spotkania.mp4";
             videoPlayer.Source = new Uri(source);
             isVideoPlaying = true;
             videoPlayer.Play();
@@ -316,5 +339,15 @@ namespace WpfLab2
             videoPlayer.Volume = volume;
         }
 
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                //videoPlayer.Source = new Uri(openFileDialog.FileName);
+                Rows = (ObservableCollection<Row>) new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Load(openFileDialog.FileName);
+                CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).Refresh();
+            }
+        }
     }
 }
