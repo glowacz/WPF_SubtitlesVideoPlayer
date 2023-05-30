@@ -27,29 +27,29 @@ namespace WpfLab2
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    public class MainViewModel : INotifyPropertyChanged
-    {
-        private ObservableCollection<Row> rows;
+    //public class MainViewModel : INotifyPropertyChanged
+    //{
+    //    private ObservableCollection<Row> rows;
 
-        public ObservableCollection<Row> Rows
-        {
-            get { return rows; }
-            set
-            {
-                if (rows != value)
-                {
-                    rows = value;
-                    //PropertyChanged(nameof(Rows));
-                    PropertyChanged();
-                }
-            }
-        }
+    //    public ObservableCollection<Row> Rows
+    //    {
+    //        get { return rows; }
+    //        set
+    //        {
+    //            if (rows != value)
+    //            {
+    //                rows = value;
+    //                //PropertyChanged(nameof(Rows));
+    //                //PropertyChanged();
+    //            }
+    //        }
+    //    }
 
-        public event PropertyChangedEventHandler? PropertyChanged
-        {
-            add { }
-            remove { }
-        }
+    //    //public event PropertyChangedEventHandler? PropertyChanged
+    //    //{
+    //    //    add { }
+
+    //    //}
 
         public class CurrentTimeConverter : IValueConverter
     {
