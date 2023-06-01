@@ -34,8 +34,9 @@
             </MenuItem>
             <MenuItem Header="Subtitles">
                 <MenuItem Header="Open" Click="Open_Click"/>
-                <MenuItem Header="Save"/>
-                <MenuItem Header="Save Translation" Visibility="{Binding Source={x:Reference showImperial}, Path=IsChecked}"/>
+                <MenuItem Name="Save" Header="Save" Click="Save_Click"/>
+                <MenuItem Name="Save_Translation" Header="Save Translation" Click="Save_Click"
+                          Visibility="{Binding Source={x:Reference showImperial}, Path=IsChecked}"/>
                 <MenuItem x:Name="showImperial" Header="Translation" IsCheckable="True" IsChecked="False"/>
             </MenuItem>
             <MenuItem Header="About" Click="MenuItem_About" />
@@ -101,12 +102,12 @@
         <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch"/>
 
         <!--<DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding}"--> 
-        <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding MainViewModel}" 
+        <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding Rows}"
                   CanUserAddRows="True" CanUserReorderColumns="False" AutoGenerateColumns="False"
                   SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Show Time" Width="Auto" Binding="{Binding ShowTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-                <DataGridTextColumn Header="Hide Time" Width="Auto" Binding="{Binding HideTime}" />
+                <DataGridTextColumn Header="Hide Time" Width="Auto" Binding="{Binding HideTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
                 <DataGridTextColumn Header="Text" Width="2*" Binding="{Binding Text}" />
                 <DataGridTextColumn Header="Translation" Width="2*" Binding="{Binding Translation}" 
                                     Visibility="{Binding Source={x:Reference showImperial}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>

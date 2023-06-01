@@ -29,9 +29,18 @@ namespace WpfLab2
     /// 
     public class MainViewModel : INotifyPropertyChanged
     {
-        //private ObservableCollection<Row> rows;
+        private ObservableCollection<Row> rows = new ObservableCollection<Row>();
 
-        public ObservableCollection<Row> Rows { get; set; }
+        public ObservableCollection<Row> Rows
+        {
+            //get; set;
+            get { return rows; }
+            set
+            {
+                rows = value;
+                OnPropertyChanged("");
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(String info)
         {
@@ -42,12 +51,6 @@ namespace WpfLab2
             }
         }
     }
-
-        //public event PropertyChangedEventHandler? PropertyChanged
-        //{
-        //    add { }
-
-        //}
 
     public class CurrentTimeConverter : IValueConverter
     {
@@ -78,7 +81,11 @@ namespace WpfLab2
                 string format = "hh\\:mm\\:ss\\.fff";
                 string formattedTimeSpan = timeSpan.ToString(format);
 
-                formattedTimeSpan = formattedTimeSpan.TrimStart('0');
+                int i = 0;
+                while (i < formattedTimeSpan.Length - 1 && formattedTimeSpan[i] == '0' || formattedTimeSpan[i] == ':') i++;
+                
+                formattedTimeSpan = formattedTimeSpan.Substring(i, formattedTimeSpan.Length - i);
+                //formattedTimeSpan = formattedTimeSpan.TrimStart('0');
 
                 if (timeSpan.Milliseconds == 0)
                 {
@@ -160,6 +167,7 @@ namespace WpfLab2
             mainViewModel.Rows = new ObservableCollection<Row>();
 
             //DataContext = mainViewModel.Rows;
+            this.DataContext = mainViewModel;
 
             Random random = new Random();
 
@@ -341,11 +349,27 @@ namespace WpfLab2
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Subtitle files (*.srt)|*.srt|All files (*.*)|*.*\\";
             if (openFileDialog.ShowDialog() == true)
             {
-                //videoPlayer.Source = new Uri(openFileDialog.FileName);
-                mainViewModel.Rows = (ObservableCollection<Row>) new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Load(openFileDialog.FileName);
-                CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).Refresh();
+                //mainViewModel.Rows.Clear();
+
+                mainViewModel.Rows = (ObservableCollection<Row>)new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Load(openFileDialog.FileName);
+                
+                //CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).Refresh();
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Subtitle files (*.srt)|*.srt|All files (*.*)|*.*\\";
+            saveFileDialog.FileName = sender == Save ? "subtitles.srt" : "subtitles_translation.srt";
+            //saveFileDialog.FilterIndex = 1;
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Save(saveFileDialog.FileName, mainViewModel.Rows, sender == Save);
             }
         }
     }
