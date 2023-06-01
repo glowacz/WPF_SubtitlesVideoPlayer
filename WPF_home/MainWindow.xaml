@@ -101,7 +101,7 @@
         
         <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch"/>
 
-        <!--<DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding}"--> 
+        <!--<DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding}"-->
         <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding Rows}"
                   CanUserAddRows="True" CanUserReorderColumns="False" AutoGenerateColumns="False"
                   SelectionChanged="DataGrid_SelectionChanged">
@@ -113,8 +113,8 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Show Time" Width="Auto" Binding="{Binding ShowTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
-                <DataGridTextColumn Header="Hide Time" Width="Auto" Binding="{Binding HideTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
+                <DataGridTextColumn Header="Show Time" Width="Auto" Binding="{Binding ShowTime, Converter={StaticResource TimeSpanToStringConverter}}" />
+                <DataGridTextColumn Header="Hide Time" Width="Auto" Binding="{Binding HideTime, Converter={StaticResource TimeSpanToStringConverter}}" />
                 <DataGridTextColumn Header="Text" Width="2*" Binding="{Binding Text}" />
                 <DataGridTextColumn Header="Translation" Width="2*" Binding="{Binding Translation}" 
                                     Visibility="{Binding Source={x:Reference showImperial}, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>

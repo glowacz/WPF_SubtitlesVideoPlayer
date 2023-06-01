@@ -115,6 +115,132 @@ namespace WpfLab2
         }
 
     }
+    //public class Row : IEditableObject
+    //{
+    //    public TimeSpan ShowTime
+    //    {
+    //        get
+    //        {
+    //            return this.custData.showTime;
+    //        }
+    //        set
+    //        {
+    //            this.custData.showTime = value;
+    //        }
+    //    }
+
+    //    public TimeSpan HideTime
+    //    {
+    //        get
+    //        {
+    //            return this.custData.hideTime;
+    //        }
+    //        set
+    //        {
+    //            this.custData.hideTime = value;
+    //        }
+    //    }
+
+    //    public string Text
+    //    {
+    //        get
+    //        {
+    //            return this.custData.text;
+    //        }
+    //        set
+    //        {
+    //            this.custData.text = value;
+    //        }
+    //    }
+
+    //    public string Translation
+    //    {
+    //        get
+    //        {
+    //            return this.custData.translation;
+    //        }
+    //        set
+    //        {
+    //            this.custData.translation = value;
+    //        }
+    //    }
+    //    //public TimeSpan HideTime { get; set; }
+
+    //    //public string Text { get; set; }
+
+    //    //public string Translation { get; set; }
+
+    //    struct CustomerData
+    //    {
+    //        internal TimeSpan showTime;
+    //        internal TimeSpan hideTime;
+    //        internal string text;
+    //        internal string translation;
+    //    }
+
+    //    //private CustomersList parent;
+    //    private CustomerData custData;
+    //    private CustomerData backupData;
+    //    private bool inTxn = false;
+
+    //    // Implements IEditableObject
+    //    void IEditableObject.BeginEdit()
+    //    {
+    //        Console.WriteLine("Start BeginEdit");
+    //        if (!inTxn)
+    //        {
+    //            this.backupData = custData;
+    //            inTxn = true;
+    //            //Console.WriteLine("BeginEdit - " + this.backupData.lastName);
+    //        }
+    //        Console.WriteLine("End BeginEdit");
+    //    }
+
+    //    void IEditableObject.CancelEdit()
+    //    {
+    //        Console.WriteLine("Start CancelEdit");
+    //        if (inTxn)
+    //        {
+    //            this.custData = backupData;
+    //            inTxn = false;
+    //            //Console.WriteLine("CancelEdit - " + this.custData.lastName);
+    //        }
+    //        Console.WriteLine("End CancelEdit");
+    //    }
+
+    //    void IEditableObject.EndEdit()
+    //    {
+    //        //Console.WriteLine("Start EndEdit" + this.custData.id + this.custData.lastName);
+    //        if (inTxn)
+    //        {
+    //            backupData = new CustomerData();
+    //            inTxn = false;
+    //            //Console.WriteLine("Done EndEdit - " + this.custData.id + this.custData.lastName);
+    //        }
+    //        Console.WriteLine("End EndEdit");
+    //    }
+
+    //    public Row()
+    //    {
+    //        this.custData = new CustomerData();
+
+    //        custData.showTime = TimeSpan.Zero;
+    //        custData.hideTime = TimeSpan.Zero;
+    //        custData.text = string.Empty;
+    //        custData.translation = string.Empty;
+    //    }
+
+    //    public Row(TimeSpan showtime, TimeSpan hidetime, string text, string translation)
+    //    {
+    //        this.custData = new CustomerData();
+
+    //        custData.showTime = showtime;
+    //        custData.hideTime = hidetime;
+    //        custData.text = text;
+    //        custData.translation = translation;
+    //    }
+    //}
+
     public class Row
     {
         public TimeSpan ShowTime { get; set; }
@@ -379,7 +505,10 @@ namespace WpfLab2
 
             foreach(var row in mainViewModel.Rows)
             {
-                if (row.HideTime > max) max = row.HideTime;
+                if (row.HideTime > max)
+                {
+                    max = row.HideTime;
+                }
             }
 
             mainViewModel.Rows.Add(new Row(max, max, "", ""));
@@ -387,15 +516,21 @@ namespace WpfLab2
 
         private void Add_after_Click(object sender, RoutedEventArgs e)
         {
+            object rowMax = null;
             TimeSpan max = TimeSpan.MinValue;
 
             foreach (var row in dataGrid.SelectedItems)
             {
                 if(!(row is Row)) continue;
-                if ((row as Row).HideTime > max) max = (row as Row).HideTime;
+                if ((row as Row).HideTime >= max)
+                {
+                    max = (row as Row).HideTime;
+                    rowMax = row;
+                }
             }
 
-            mainViewModel.Rows.Add(new Row(max, max, "", ""));       
+            mainViewModel.Rows.Insert(mainViewModel.Rows.IndexOf(rowMax as Row) + 1, new Row(max, max, "", ""));
+            CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).Refresh();
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
