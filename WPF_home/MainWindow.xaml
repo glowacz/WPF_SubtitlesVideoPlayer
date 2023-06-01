@@ -105,6 +105,13 @@
         <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding Rows}"
                   CanUserAddRows="True" CanUserReorderColumns="False" AutoGenerateColumns="False"
                   SelectionChanged="DataGrid_SelectionChanged">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Click="Add_Click"/>
+                    <MenuItem Header="Add after" Click="Add_after_Click"/>
+                    <MenuItem Header="Delete" Click="Delete_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Show Time" Width="Auto" Binding="{Binding ShowTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
                 <DataGridTextColumn Header="Hide Time" Width="Auto" Binding="{Binding HideTime, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />

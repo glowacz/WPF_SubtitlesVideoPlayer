@@ -372,5 +372,40 @@ namespace WpfLab2
                 new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Save(saveFileDialog.FileName, mainViewModel.Rows, sender == Save);
             }
         }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan max = TimeSpan.MinValue;
+
+            foreach(var row in mainViewModel.Rows)
+            {
+                if (row.HideTime > max) max = row.HideTime;
+            }
+
+            mainViewModel.Rows.Add(new Row(max, max, "", ""));
+        }
+
+        private void Add_after_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan max = TimeSpan.MinValue;
+
+            foreach (var row in dataGrid.SelectedItems)
+            {
+                if(!(row is Row)) continue;
+                if ((row as Row).HideTime > max) max = (row as Row).HideTime;
+            }
+
+            mainViewModel.Rows.Add(new Row(max, max, "", ""));       
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            //for(int i = 0; i < dataGrid.SelectedItems.Count; i++)
+            for(int i = dataGrid.SelectedItems.Count - 1; i >= 0 ; i--)
+            {
+                Row row = (Row) dataGrid.SelectedItems[i];
+                mainViewModel.Rows.Remove(row);
+            }
+        }
     }
 }
