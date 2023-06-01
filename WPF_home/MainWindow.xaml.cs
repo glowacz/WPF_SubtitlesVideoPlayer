@@ -27,31 +27,29 @@ namespace WpfLab2
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    //public class MainViewModel : INotifyPropertyChanged
-    //{
-    //    private ObservableCollection<Row> rows;
+    public class MainViewModel : INotifyPropertyChanged
+    {
+        //private ObservableCollection<Row> rows;
 
-    //    public ObservableCollection<Row> Rows
-    //    {
-    //        get { return rows; }
-    //        set
-    //        {
-    //            if (rows != value)
-    //            {
-    //                rows = value;
-    //                //PropertyChanged(nameof(Rows));
-    //                //PropertyChanged();
-    //            }
-    //        }
-    //    }
+        public ObservableCollection<Row> Rows { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(String info)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(info));
+            }
+        }
+    }
 
-    //    //public event PropertyChangedEventHandler? PropertyChanged
-    //    //{
-    //    //    add { }
+        //public event PropertyChangedEventHandler? PropertyChanged
+        //{
+        //    add { }
 
-    //    //}
+        //}
 
-        public class CurrentTimeConverter : IValueConverter
+    public class CurrentTimeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -137,7 +135,8 @@ namespace WpfLab2
     }
     public partial class MainWindow : Window
     {
-        ObservableCollection<Row> Rows { get; set; }
+        //ObservableCollection<Row> Rows { get; set; }
+        MainViewModel mainViewModel = new MainViewModel();
 
         bool isVideoPlaying = false;
         bool userIsDraggingSlider = false;
@@ -156,11 +155,11 @@ namespace WpfLab2
             string source = "C:\\Users\\glowa\\Desktop\\Studia\\SOP2\\SOP2 Wykład 10-20210505_150655-Nagrywanie spotkania.mp4";
             videoPlayer.Source = new Uri(source);
             isVideoPlaying = true;
-            videoPlayer.Play();
+            videoPlayer.Play();    
 
-            Rows = new ObservableCollection<Row>();
+            mainViewModel.Rows = new ObservableCollection<Row>();
 
-            DataContext = Rows;
+            //DataContext = mainViewModel.Rows;
 
             Random random = new Random();
 
@@ -169,7 +168,7 @@ namespace WpfLab2
                 int showTimeSeconds = random.Next(1, 15), duration = random.Next(1, 5);
                 TimeSpan showTime = TimeSpan.FromSeconds(showTimeSeconds), hideTime = TimeSpan.FromSeconds(showTimeSeconds + duration);
                 string text = $"{i}";
-                Rows.Add(new Row(showTime, hideTime, text, $"{i} (in English)"));
+                mainViewModel.Rows.Add(new Row(showTime, hideTime, text, $"{i} (in English)"));
             }
 
             ////DateTime date1 = new DateTime(2010, 1, 1, 8, 0, 15);
@@ -181,10 +180,10 @@ namespace WpfLab2
 
             //Row r1 = new Row(ts1, ts1, "aaa", "aaa (in English)");
             //Row r2 = new Row(ts2, ts2, "bbb", "bbb (in English)");
-            //Rows.Add(r1);
-            //Rows.Add(r2);
+            //mainViewModel.Rows.Add(r1);
+            //mainViewModel.Rows.Add(r2);
 
-            Rows = new ObservableCollection<Row>(Rows.OrderBy(x => x.ShowTime));
+            mainViewModel.Rows = new ObservableCollection<Row>(mainViewModel.Rows.OrderBy(x => x.ShowTime));
         }
 
         // https://wpf-tutorial.com/audio-video/how-to-creating-a-complete-audio-video-player/
@@ -198,7 +197,7 @@ namespace WpfLab2
 
                 StringBuilder stringBuilder = new StringBuilder();
                 bool subtitlePresent = false;
-                foreach (var row in Rows)
+                foreach (var row in mainViewModel.Rows)
                 {
                     //if (row.ShowTime >= videoPlayer.Position && row.HideTime < videoPlayer.Position)
                     
@@ -345,7 +344,7 @@ namespace WpfLab2
             if (openFileDialog.ShowDialog() == true)
             {
                 //videoPlayer.Source = new Uri(openFileDialog.FileName);
-                Rows = (ObservableCollection<Row>) new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Load(openFileDialog.FileName);
+                mainViewModel.Rows = (ObservableCollection<Row>) new SubtitlesPluginNamespace.SubtitlesPlugin("", "").Load(openFileDialog.FileName);
                 CollectionViewSource.GetDefaultView(dataGrid.ItemsSource).Refresh();
             }
         }

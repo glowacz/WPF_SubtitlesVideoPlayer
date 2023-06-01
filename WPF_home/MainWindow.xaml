@@ -12,6 +12,10 @@
         <local:CurrentTimeConverter x:Key="CurrentTimeConverter" />
     </Window.Resources>
 
+    <Window.DataContext>
+        <local:MainViewModel></local:MainViewModel>
+    </Window.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -96,7 +100,8 @@
         
         <GridSplitter Grid.Row="2" Height="5" HorizontalAlignment="Stretch"/>
 
-        <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding}" 
+        <!--<DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding}"--> 
+        <DataGrid Name="dataGrid" Grid.Row="3" Visibility="Visible" ItemsSource="{Binding MainViewModel}" 
                   CanUserAddRows="True" CanUserReorderColumns="False" AutoGenerateColumns="False"
                   SelectionChanged="DataGrid_SelectionChanged">
             <DataGrid.Columns>
