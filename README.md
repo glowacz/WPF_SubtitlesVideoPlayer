@@ -94,11 +94,11 @@ Przyciski te wykorzystują dołączonych do zadania grafik "play.png", "pause.pn
 • System pluginów pozwalający dodać obsługę wczytywania/zapisywania nowego formatu napisu, bez rekompilowania aplikacji<br />
 • Po wczytaniu pluginu w menu Translation", pojawiają się opcje wczytywania/zapisywania napisów lub ich tłumaczneia w<br />
 odpowiednim formacie<br />
-• Plugin dodający obsługę wczytywania/zapisywania napisów w formacie ,srt (SubRip)<br />
+• Plugin dodający obsługę wczytywania/zapisywania napisów w formacie .srt (SubRip)<br />
 • Pluginy powinny być zaimplementowane przez stworzenie nowego projektu typu "Class library” i kompilowane być do pliku DLL<br />
 • Wskazówka: Pluginy powinny implementować odpowiedni interfejs, np.<br />
 public interface ISubtitlesP1ugin<br />
 string Name { get; }<br />
 string Extention { get; }<br />
-I Load (string path) ;<br />
-void Save (string pat h, subtitles) ;<br />
+ICollection<SubtitleRecord> Load (string path);<br />
+void Save (string path, ICollection<SubtitleRecord> subtitles);<br />
