@@ -66,3 +66,39 @@ pokazywany jest wertykalny Scrollbar<br />
 • Tabela umożliwia dodanie nowej instancji napisu, jest on dodawany z czasem pokazania i ukrycia będącym maksymalną wartością czasu ukrycia<br />
 • Tabela jest domyślnie posortowana względem czasu pokazania napisu, użytkownik nie może zmienić domyślnego sortowania<br />
 • Wskazówki: DataGrid, DataGridTextColumn, IValueConverter (bool to Visiblity)<br />
+
+• Odtwarzacz wideo (2 punkty)<br />
+• Menu "Open” pozwala wybrać i otworzyć plik wideo<br />
+• Scroll myszy nad kontrolką odtwarzacza pozwala zmieniać głośność wideo<br />
+• Kliknięcie na odtwarzacz odtwarza/pauzuje wideo<br />
+• Wybranie napisu z tabeli napisów powoduje przesunięcie odtwarzania do czasu pokazania napisu<br />
+• Odtwarzacz wideo - kontrolki (3 punkty)<br />
+• Przyciski "Play", "Pause", "Stop", które odpowiednio: włączają odtwarzanie wideo, wstrzymują odtwarzanie wideo, wstrzymują odtwarzanie wideo + reserują pozycję odtwarzacza,<br />
+Przyciski te wykorzystują dołączonych do zadania grafik "play.png", "pause.png", "stop.png”.<br />
+• Tekst z informacją o obecnej pozycji odtwarzania w formacie "hh:mm:ss.fff”<br />
+• Slider pokazujący obecną pozycję odtwarzania, pozwalający ją zmienić<br />
+• Slider pokazujący obecną głośność odtwarzania pozwalający ją zmienić<br />
+• Odtwarzacz wideo - napisy (2 punkty)<br />
+• Nad odtwarzaczem, w jego dolnej części na środku wyświetlane są napisy<br />
+• tekst napisów jest wyśrodkowany<br />
+• napisy są koloru białego<br />
+• tło napisów jest czarne z 50% przeźroczystością<br />
+• Padding napisów jest ustawiony na 5px<br />
+• W chwili czasu t, są wyświetlane wszystkie napisy które powinny się pojawić przed czasem t i zniknąć po czasie t.<br />
+• W przypadku gdy więcej niż jeden napis powinien zostać pokazany w jednej chwili, pokazują się one jeden pod drugim w kolejności od tego który pojawił się najwcześniej<br />
+• Tabela napisów - menu kontekstowe (2 punkty)<br />
+• Opcja "Add” - Dodaje napis o czasie pokazania i ukrycia będącym maksymalnym czasem ukrycia napisu<br />
+• Opcja "Add after” - Dodaje napis o czasie pokazania i ukrycia będącym maksymalnym czasem ukrycia napisu wśród obecenie zaznaczonych napisów<br />
+• opcja "Delete” - Usuwa zazanaczone napisy<br />
+• System pluginów - wczytywanie/zapisywanie napisów (3 punkty)<br />
+• System pluginów pozwalający dodać obsługę wczytywania/zapisywania nowego formatu napisu, bez rekompilowania aplikacji<br />
+• Po wczytaniu pluginu w menu Translation", pojawiają się opcje wczytywania/zapisywania napisów lub ich tłumaczneia w<br />
+odpowiednim formacie<br />
+• Plugin dodający obsługę wczytywania/zapisywania napisów w formacie ,srt (SubRip)<br />
+• Pluginy powinny być zaimplementowane przez stworzenie nowego projektu typu "Class library” i kompilowane być do pliku DLL<br />
+• Wskazówka: Pluginy powinny implementować odpowiedni interfejs, np.<br />
+public interface ISubtitlesP1ugin<br />
+string Name { get; }<br />
+string Extention { get; }<br />
+I Load (string path) ;<br />
+void Save (string pat h, subtitles) ;<br />
